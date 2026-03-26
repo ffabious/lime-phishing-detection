@@ -63,6 +63,19 @@ Outputs:
 - `artifacts/deletion_curve.png` with ranked vs random curves
 - `artifacts/deletion_summary.json` with AUC and gap metrics
 
+## Generate lime explanation
+```bash
+python scripts/explain.py --text "Your account has been suspended. Click here to verify."
+```
+
+## Visualize explanations
+```bash
+python scripts/visualize_lime.py \
+    --explanation-file artifacts/explanations/explanation.json \
+    --output-dir artifacts/explanations/figures
+
+```
+
 ## Notes
 
 - The deletion test uses leave-one-token-out occlusion scores to rank tokens.
