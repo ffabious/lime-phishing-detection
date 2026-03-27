@@ -10,15 +10,18 @@ import numpy as np
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Plot deletion-test curves and summary metrics")
+    parser = argparse.ArgumentParser(
+        description="Plot deletion-test curves and summary metrics")
     parser.add_argument("--input-json", default="artifacts/deletion_test.json")
-    parser.add_argument("--output-image", default="artifacts/deletion_curve.png")
-    parser.add_argument("--output-summary", default="artifacts/deletion_summary.json")
+    parser.add_argument(
+        "--output-image", default="artifacts/deletion_curve.png")
+    parser.add_argument("--output-summary",
+                        default="artifacts/deletion_summary.json")
     return parser.parse_args()
 
 
 def area_under_curve(x: np.ndarray, y: np.ndarray) -> float:
-    return float(np.trapz(y, x))
+    return float(np.trapezoid(y, x))
 
 
 def main() -> None:
@@ -40,8 +43,10 @@ def main() -> None:
     max_gap = float(np.max(point_gap))
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    ax.plot(fractions, ranked, marker="o", linewidth=2.0, label="Ranked deletion")
-    ax.plot(fractions, random_curve, marker="s", linewidth=2.0, label="Random deletion")
+    ax.plot(fractions, ranked, marker="o",
+            linewidth=2.0, label="Ranked deletion")
+    ax.plot(fractions, random_curve, marker="s",
+            linewidth=2.0, label="Random deletion")
     ax.fill_between(fractions, ranked, random_curve, alpha=0.15)
 
     ax.set_title("Deletion Test: Ranked vs Random")

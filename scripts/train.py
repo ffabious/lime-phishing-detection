@@ -15,10 +15,14 @@ from src.model import build_tokenizer_and_model, compute_metrics
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Train DistilRoBERTa phishing classifier")
-    parser.add_argument("--dataset", default="data/data.csv", help="Path to source dataset CSV")
-    parser.add_argument("--output-dir", default="artifacts/model", help="Directory for model artifacts")
-    parser.add_argument("--model-name", default="distilroberta-base", help="HF model checkpoint")
+    parser = argparse.ArgumentParser(
+        description="Train DistilRoBERTa phishing classifier")
+    parser.add_argument("--dataset", default="data/data.csv",
+                        help="Path to source dataset CSV")
+    parser.add_argument("--output-dir", default="artifacts/model",
+                        help="Directory for model artifacts")
+    parser.add_argument(
+        "--model-name", default="distilroberta-base", help="HF model checkpoint")
     parser.add_argument("--epochs", type=float, default=1.0)
     parser.add_argument("--train-batch-size", type=int, default=16)
     parser.add_argument("--eval-batch-size", type=int, default=32)
@@ -38,7 +42,8 @@ def main() -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     df = load_dataset(args.dataset)
-    train_df, val_df, test_df = stratified_split(df, args.val_size, args.test_size, args.seed)
+    train_df, val_df, test_df = stratified_split(
+        df, args.val_size, args.test_size, args.seed)
     save_splits(train_df, val_df, test_df, output_dir)
 
     tokenizer, model = build_tokenizer_and_model(args.model_name)
@@ -50,9 +55,12 @@ def main() -> None:
             max_length=args.max_length,
         )
 
-    train_ds = Dataset.from_pandas(train_df, preserve_index=False).map(preprocess, batched=True)
-    val_ds = Dataset.from_pandas(val_df, preserve_index=False).map(preprocess, batched=True)
-    test_ds = Dataset.from_pandas(test_df, preserve_index=False).map(preprocess, batched=True)
+    train_ds = Dataset.from_pandas(
+        train_df, preserve_index=False).map(preprocess, batched=True)
+    val_ds = Dataset.from_pandas(
+        val_df, preserve_index=False).map(preprocess, batched=True)
+    test_ds = Dataset.from_pandas(
+        test_df, preserve_index=False).map(preprocess, batched=True)
 
     collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
@@ -106,7 +114,8 @@ def main() -> None:
     trainer.train()
 
     eval_metrics = trainer.evaluate(eval_dataset=test_ds)
-    eval_metrics = {k: float(v) if isinstance(v, (np.floating, np.integer)) else v for k, v in eval_metrics.items()}
+    eval_metrics = {k: float(v) if isinstance(
+        v, (np.floating, np.integer)) else v for k, v in eval_metrics.items()}
 
     trainer.save_model(str(output_dir))
     tokenizer.save_pretrained(str(output_dir))
