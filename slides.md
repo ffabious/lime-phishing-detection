@@ -209,7 +209,7 @@ img {
 
 .phish {
   color: var(--phish);
-  font-weight: 800;
+  /* font-weight: 800; */
 }
 
 .safe {
