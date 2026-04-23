@@ -232,7 +232,7 @@ This does not mean that `account` is always a safe word. LIME explains only one 
 
 The same explanation can also be shown as a bar chart:
 
-![Token importance chart](./artifacts/explanations/figures/token_importance.png)
+![Token importance chart](./token_importance.png)
 
 ## Quantitative check: deletion test
 
@@ -260,7 +260,7 @@ Results over 30 phishing emails:
 
 Lower AUC is better here, because it means the model confidence drops faster. The ranked deletion curve is clearly lower than the random curve.
 
-![Deletion curve](./artifacts/deletion_curve.png)
+![Deletion curve](./deletion_curve.png)
 
 ## How to reproduce
 
